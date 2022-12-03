@@ -41,4 +41,8 @@ export class TodosService {
       updatedTodo
     );
   }
+
+  delete(id: number): Observable<Todo> {
+    throw 'not implemented';
+  }
 }

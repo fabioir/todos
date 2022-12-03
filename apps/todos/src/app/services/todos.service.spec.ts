@@ -107,4 +107,27 @@ describe('TodosService', () => {
         service.update({ ...fakeTodo, todo: '' }).subscribe()
       ).toThrowError('Missing content'));
   });
+
+  describe('delete', () => {
+    it('should delete and return a todo', (done) => {
+      const deletionData = {
+        isDeleted: true,
+        deletedOn: '2022-12-03T16:49:51.688Z',
+      };
+
+      service.delete(fakeTodo.id).subscribe((deletedTodo) => {
+        expect(deletedTodo).toEqual({ ...fakeTodo, ...deletionData });
+        done();
+      });
+
+      httpTestingController
+        .expectOne(`${environment.apiRoot}/todos/${fakeTodo.id}`)
+        .flush({ ...fakeTodo, ...deletionData });
+    });
+
+    it('should throw an error if an invalid id is used', () =>
+      expect(() =>
+        service.delete(undefined as unknown as number).subscribe()
+      ).toThrowError('Invalid id'));
+  });
 });
