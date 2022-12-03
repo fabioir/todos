@@ -6,6 +6,7 @@ import {
 } from '@angular/common/http/testing';
 
 import { environment } from '../../environments/environment';
+import { DraftTodo } from '../models/todo.model';
 import { TodosService } from './todos.service';
 import { fakeAllFoundTodos, fakeTodo } from './todos.service.fakes';
 
@@ -57,5 +58,30 @@ describe('TodosService', () => {
       expect(() =>
         service.findOne(undefined as unknown as number).subscribe()
       ).toThrowError('Invalid id'));
+  });
+
+  describe('create', () => {
+    it('should create and return a todo', (done) => {
+      const draftTodo: DraftTodo = {
+        completed: false,
+        todo: 'Send party invitations',
+        userId: 4321,
+      };
+      const id = 1235;
+
+      service.create(draftTodo).subscribe((createdTodo) => {
+        expect(createdTodo).toEqual({ ...draftTodo, id });
+        done();
+      });
+
+      httpTestingController
+        .expectOne(`${environment.apiRoot}/todos/add`)
+        .flush({ ...draftTodo, id });
+    });
+
+    it('should throw an error if todo content is missing', () =>
+      expect(() =>
+        service.create({ todo: '', completed: false, userId: 4321 }).subscribe()
+      ).toThrowError('Missing content'));
   });
 });

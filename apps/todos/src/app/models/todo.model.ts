@@ -14,3 +14,5 @@ export interface AllFoundTodos {
   skip: number;
   limit: number;
 }
+
+export type DraftTodo = Pick<Todo, 'todo' | 'userId' | 'completed'>;
