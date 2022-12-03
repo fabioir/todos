@@ -1,6 +1,6 @@
 import { AllFoundTodos, Todo } from '../models/todo.model';
 
-const fakeTodo: Todo = {
+export const fakeTodo: Todo = {
   completed: false,
   id: 1234,
   todo: 'Build the code challenge preparation project',

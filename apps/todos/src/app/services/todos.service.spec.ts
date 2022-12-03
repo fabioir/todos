@@ -7,7 +7,7 @@ import {
 
 import { environment } from '../../environments/environment';
 import { TodosService } from './todos.service';
-import { fakeAllFoundTodos } from './todos.service.fakes';
+import { fakeAllFoundTodos, fakeTodo } from './todos.service.fakes';
 
 describe('TodosService', () => {
   let service: TodosService;
@@ -39,5 +39,23 @@ describe('TodosService', () => {
         .expectOne(`${environment.apiRoot}/todos`)
         .flush(fakeAllFoundTodos);
     });
+  });
+
+  describe('findOne', () => {
+    it('should fetch and return a todo', (done) => {
+      service.findOne(fakeTodo.id).subscribe((allFoundTodos) => {
+        expect(allFoundTodos).toEqual(fakeTodo);
+        done();
+      });
+
+      httpTestingController
+        .expectOne(`${environment.apiRoot}/todos/${fakeTodo.id}`)
+        .flush(fakeTodo);
+    });
+
+    it('should throw an error if an invalid id is used', () =>
+      expect(() =>
+        service.findOne(undefined as unknown as number).subscribe()
+      ).toThrowError('Invalid id'));
   });
 });
