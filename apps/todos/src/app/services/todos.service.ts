@@ -43,6 +43,10 @@ export class TodosService {
   }
 
   delete(id: number): Observable<Todo> {
-    throw 'not implemented';
+    if (isNaN(id)) {
+      throw 'Invalid id';
+    }
+
+    return this.http.delete<Todo>(`${environment.apiRoot}/todos/${id}`);
   }
 }
