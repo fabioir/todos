@@ -24,6 +24,10 @@ export class TodosService {
   }
 
   create(draftTodo: DraftTodo): Observable<Todo> {
-    throw 'not implemented';
+    if (!draftTodo.todo) {
+      throw 'Missing content';
+    }
+
+    return this.http.post<Todo>(`${environment.apiRoot}/todos/add`, draftTodo);
   }
 }
