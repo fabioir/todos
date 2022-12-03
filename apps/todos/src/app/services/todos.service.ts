@@ -32,6 +32,13 @@ export class TodosService {
   }
 
   update(updatedTodo: Todo): Observable<Todo> {
-    throw 'not implemented';
+    if (!updatedTodo.todo) {
+      throw 'Missing content';
+    }
+
+    return this.http.put<Todo>(
+      `${environment.apiRoot}/todos/${updatedTodo.id}`,
+      updatedTodo
+    );
   }
 }
