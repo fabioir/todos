@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http/testing';
 
 import { environment } from '../../environments/environment';
-import { DraftTodo } from '../models/todo.model';
+import { DraftTodo, Todo } from '../models/todo.model';
 import { TodosService } from './todos.service';
 import { fakeAllFoundTodos, fakeTodo } from './todos.service.fakes';
 
@@ -82,6 +82,29 @@ describe('TodosService', () => {
     it('should throw an error if todo content is missing', () =>
       expect(() =>
         service.create({ todo: '', completed: false, userId: 4321 }).subscribe()
+      ).toThrowError('Missing content'));
+  });
+
+  describe('update', () => {
+    it('should update and return a todo', (done) => {
+      const updatedTodo: Todo = {
+        ...fakeTodo,
+        todo: 'Feed the fish',
+      };
+
+      service.update(updatedTodo).subscribe((createdTodo) => {
+        expect(createdTodo).toEqual(updatedTodo);
+        done();
+      });
+
+      httpTestingController
+        .expectOne(`${environment.apiRoot}/todos/${updatedTodo.id}`)
+        .flush(updatedTodo);
+    });
+
+    it('should throw an error if todo content is missing', () =>
+      expect(() =>
+        service.update({ ...fakeTodo, todo: '' }).subscribe()
       ).toThrowError('Missing content'));
   });
 });

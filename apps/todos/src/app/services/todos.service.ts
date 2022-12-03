@@ -30,4 +30,8 @@ export class TodosService {
 
     return this.http.post<Todo>(`${environment.apiRoot}/todos/add`, draftTodo);
   }
+
+  update(updatedTodo: Todo): Observable<Todo> {
+    throw 'not implemented';
+  }
 }
