@@ -16,6 +16,10 @@ export class TodosService {
   }
 
   findOne(id: number): Observable<Todo> {
-    throw 'not implemented';
+    if (isNaN(id)) {
+      throw 'Invalid id';
+    }
+
+    return this.http.get<Todo>(`${environment.apiRoot}/todos/${id}`);
   }
 }
