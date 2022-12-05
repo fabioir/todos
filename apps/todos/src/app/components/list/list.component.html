@@ -3,6 +3,7 @@
     <todos-item
       [todo]="todo"
       [selected]="(selectedTodo$ | async)?.id === todo.id"
+      (todoUpdated)="updateTodo($event)"
     ></todos-item>
   </div>
 </div>

@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { fromTodoReducer, fromTodoSelectors } from '../../state';
+import { Todo } from '../../models/todo.model';
+import {
+  fromTodoActions,
+  fromTodoReducer,
+  fromTodoSelectors,
+} from '../../state';
 
 @Component({
   selector: 'todos-list',
@@ -13,4 +18,12 @@ export class ListComponent {
   );
 
   constructor(private store: Store<fromTodoReducer.State>) {}
+
+  updateTodo(updatedTodo: Todo): void {
+    this.store.dispatch(
+      fromTodoActions.updateTodo({
+        todo: updatedTodo,
+      })
+    );
+  }
 }

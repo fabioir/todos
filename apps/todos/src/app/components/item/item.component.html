@@ -1,3 +1,15 @@
-<div class="h-8 bg-orange-100 rounded mb-1">
-  <p>{{ todo.todo }}</p>
+<div
+  class="h-8 bg-orange-100 rounded mb-1 flex items-center hover:bg-orange-50"
+  [ngClass]="{ 'bg-orange-300 hover:bg-orange-300': selected }"
+>
+  <input
+    type="checkbox"
+    [(ngModel)]="completed"
+    (ngModelChange)="completedToggled()"
+    class="cursor-pointer m-2"
+  />
+  <span
+    class="overflow-ellipsis whitespace-nowrap overflow-hidden pointer-events-none"
+    >{{ todo.todo }}</span
+  >
 </div>

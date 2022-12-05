@@ -14,6 +14,11 @@ export const addTodo = createAction(
 
 export const updateTodo = createAction(
   '[Todo/API] Update Todo',
+  props<{ todo: Todo }>()
+);
+
+export const persistUpdatedTodo = createAction(
+  '[Todo/API] Persist Updated Todo',
   props<{ todo: Update<Todo> }>()
 );
 

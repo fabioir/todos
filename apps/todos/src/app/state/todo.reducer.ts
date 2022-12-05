@@ -22,7 +22,7 @@ export const reducer = createReducer(
   on(fromTodoActions.addTodo, (state, action) =>
     adapter.addOne(action.todo, state)
   ),
-  on(fromTodoActions.updateTodo, (state, action) =>
+  on(fromTodoActions.persistUpdatedTodo, (state, action) =>
     adapter.updateOne(action.todo, state)
   ),
   on(fromTodoActions.deleteTodo, (state, action) =>

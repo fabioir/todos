@@ -24,7 +24,7 @@ describe('TodoEffects', () => {
         provideMockActions(() => actions$),
         {
           provide: TodosService,
-          useValue: { findAll: () => of(fakeAllFoundTodos) },
+          useValue: { findAll: () => of(fakeAllFoundTodos), update: jest.fn() },
         },
       ],
     });
@@ -44,6 +44,32 @@ describe('TodoEffects', () => {
         expect(action).toEqual(
           fromTodoActions.loadTodos({ todos: fakeAllFoundTodos.todos })
         );
+        done();
+      });
+    });
+  });
+
+  describe('updateTodo', () => {
+    it('should update todo and dispatch persist action', (done) => {
+      const todosService = TestBed.inject(TodosService);
+      const updatedFakeTodo: Todo = { ...fakeTodo, todo: 'Updated TODO' };
+      (todosService.update as unknown as jest.SpyInstance).mockReturnValueOnce(
+        of(updatedFakeTodo)
+      );
+
+      actions$ = of({
+        type: fromTodoActions.updateTodo.type,
+        todo: updatedFakeTodo,
+      } as unknown as Action<unknown>);
+
+      effects.updateTodo$.subscribe((action) => {
+        expect(action).toEqual(
+          fromTodoActions.persistUpdatedTodo({
+            todo: { id: fakeTodo.id, changes: updatedFakeTodo },
+          })
+        );
+        expect(todosService.update).toHaveBeenCalledWith(updatedFakeTodo);
+        (todosService.update as unknown as jest.SpyInstance).mockRestore();
         done();
       });
     });

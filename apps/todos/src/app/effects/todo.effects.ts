@@ -5,8 +5,9 @@ import {
   ofType,
   ROOT_EFFECTS_INIT,
 } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
 import { map, switchMap } from 'rxjs';
-import { AllFoundTodos } from '../models/todo.model';
+import { AllFoundTodos, Todo } from '../models/todo.model';
 import { TodosService } from '../services/todos.service';
 import { fromTodoActions } from '../state';
 
@@ -20,6 +21,20 @@ export class TodoEffects {
       switchMap(() => this.todosService.findAll()),
       map((allFoundTodos: AllFoundTodos) =>
         fromTodoActions.loadTodos({ todos: allFoundTodos.todos })
+      )
+    )
+  );
+
+  updateTodo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromTodoActions.updateTodo.type),
+      switchMap((action: Action & { todo: Todo }) =>
+        this.todosService.update(action.todo)
+      ),
+      map((todo: Todo) =>
+        fromTodoActions.persistUpdatedTodo({
+          todo: { id: todo.id, changes: todo },
+        })
       )
     )
   );

@@ -3,9 +3,14 @@ import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ItemComponent } from '../item/item.component';
 
+import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Todo } from '../../models/todo.model';
-import { fromTodoReducer, fromTodoSelectors } from '../../state';
+import {
+  fromTodoActions,
+  fromTodoReducer,
+  fromTodoSelectors,
+} from '../../state';
 import { fakeTodoFactory } from '../../utils/todo.fakes';
 import { ListComponent } from './list.component';
 
@@ -19,6 +24,7 @@ describe('ListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ListComponent, ItemComponent],
+      imports: [FormsModule],
       providers: [
         provideMockStore({
           initialState: {
@@ -55,5 +61,18 @@ describe('ListComponent', () => {
     expect(items).toBeTruthy();
     expect(items).toHaveLength(1);
     expect(items[0].componentInstance.selected).toBe(true);
+  });
+
+  it('should dispatch update todo action', () => {
+    const dispatchSpy = jest.spyOn(TestBed.inject(Store), 'dispatch');
+
+    component.updateTodo(fakeTodo);
+
+    expect(dispatchSpy).toHaveBeenCalledWith(
+      fromTodoActions.updateTodo({
+        todo: fakeTodo,
+      })
+    );
+    dispatchSpy.mockRestore();
   });
 });
