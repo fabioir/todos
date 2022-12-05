@@ -8,9 +8,11 @@ import { AppComponent } from './app.component';
 import { TodoEffects } from './effects/todo.effects';
 import { fromTodoReducer } from './state';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { ListComponent } from './components/list/list.component';
+import { ItemComponent } from './components/item/item.component';
 
 @NgModule({
-  declarations: [AppComponent, ToolbarComponent],
+  declarations: [AppComponent, ToolbarComponent, ListComponent, ItemComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

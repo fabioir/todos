@@ -7,8 +7,11 @@ import {
 
 import { environment } from '../../environments/environment';
 import { DraftTodo, Todo } from '../models/todo.model';
+import { fakeAllFoundTodosFactory, fakeTodoFactory } from '../utils/todo.fakes';
 import { TodosService } from './todos.service';
-import { fakeAllFoundTodos, fakeTodo } from './todos.service.fakes';
+
+const fakeTodo = fakeTodoFactory();
+const fakeAllFoundTodos = fakeAllFoundTodosFactory([fakeTodo]);
 
 describe('TodosService', () => {
   let service: TodosService;

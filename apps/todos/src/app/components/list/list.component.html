@@ -1,0 +1,8 @@
+<div class="flex-grow rounded box-border m-3 p-3 bg-white overflow-auto">
+  <div *ngFor="let todo of todos$ | async">
+    <todos-item
+      [todo]="todo"
+      [selected]="(selectedTodo$ | async)?.id === todo.id"
+    ></todos-item>
+  </div>
+</div>

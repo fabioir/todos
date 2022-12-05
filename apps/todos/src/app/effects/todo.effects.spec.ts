@@ -6,21 +6,12 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 import { AllFoundTodos, Todo } from '../models/todo.model';
 import { TodosService } from '../services/todos.service';
 import { fromTodoActions } from '../state';
+import { fakeAllFoundTodosFactory, fakeTodoFactory } from '../utils/todo.fakes';
 
 import { TodoEffects } from './todo.effects';
 
-const fakeTodo: Todo = {
-  completed: false,
-  id: 1234,
-  todo: 'Take car to mainteinance',
-  userId: 4321,
-};
-const fakeAllFoundTodos: AllFoundTodos = {
-  limit: 30,
-  skip: 0,
-  total: 100,
-  todos: [fakeTodo],
-};
+const fakeTodo: Todo = fakeTodoFactory();
+const fakeAllFoundTodos: AllFoundTodos = fakeAllFoundTodosFactory([fakeTodo]);
 
 describe('TodoEffects', () => {
   let actions$ = new Observable<Action<unknown>>();
