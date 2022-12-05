@@ -5,6 +5,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 
+import { HttpRequest } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { DraftTodo, Todo } from '../models/todo.model';
 import { fakeAllFoundTodosFactory, fakeTodoFactory } from '../utils/todo.fakes';
@@ -109,6 +110,22 @@ describe('TodosService', () => {
       expect(() =>
         service.update({ ...fakeTodo, todo: '' }).subscribe()
       ).toThrowError('Missing content'));
+
+    it('should remove the id from the body', (done) => {
+      const updatedTodo: Todo = {
+        ...fakeTodo,
+        todo: 'Feed the fish',
+      };
+
+      service.update(updatedTodo).subscribe((createdTodo) => {
+        expect(createdTodo).toEqual(updatedTodo);
+        done();
+      });
+
+      httpTestingController
+        .expectOne((req: HttpRequest<Todo>) => req.body?.id === undefined)
+        .flush(updatedTodo);
+    });
   });
 
   describe('delete', () => {

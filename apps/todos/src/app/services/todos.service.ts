@@ -38,7 +38,7 @@ export class TodosService {
 
     return this.http.put<Todo>(
       `${environment.apiRoot}/todos/${updatedTodo.id}`,
-      updatedTodo
+      { ...updatedTodo, id: undefined }
     );
   }
 
