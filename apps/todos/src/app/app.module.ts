@@ -2,15 +2,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { AppComponent } from './app.component';
-import { NxWelcomeComponent } from './nx-welcome.component';
-import { fromTodoReducer } from './state';
-import { EffectsModule } from '@ngrx/effects';
 import { TodoEffects } from './effects/todo.effects';
+import { fromTodoReducer } from './state';
 
 @NgModule({
-  declarations: [AppComponent, NxWelcomeComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
