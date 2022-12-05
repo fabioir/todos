@@ -7,9 +7,10 @@ import { StoreModule } from '@ngrx/store';
 import { AppComponent } from './app.component';
 import { TodoEffects } from './effects/todo.effects';
 import { fromTodoReducer } from './state';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ToolbarComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
