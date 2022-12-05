@@ -6,6 +6,8 @@ import { StoreModule } from '@ngrx/store';
 import { AppComponent } from './app.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
 import { fromTodoReducer } from './state';
+import { EffectsModule } from '@ngrx/effects';
+import { TodoEffects } from './effects/todo.effects';
 
 @NgModule({
   declarations: [AppComponent, NxWelcomeComponent],
@@ -15,6 +17,7 @@ import { fromTodoReducer } from './state';
     StoreModule.forRoot({
       [fromTodoReducer.todoFeatureKey]: fromTodoReducer.reducer,
     }),
+    EffectsModule.forRoot([TodoEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent],
