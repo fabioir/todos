@@ -6,7 +6,7 @@ import {
   Output,
 } from '@angular/core';
 
-type ColorType = 'primary' | 'warn';
+type ColorType = 'primary' | 'warn' | 'accent';
 
 @Component({
   selector: 'todos-button',

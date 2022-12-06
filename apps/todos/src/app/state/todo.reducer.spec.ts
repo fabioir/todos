@@ -1,5 +1,10 @@
 import { Action } from '@ngrx/store';
-import { clearSelectedTodo, selectTodo } from './todo.actions';
+import {
+  activateCreateTodoMode,
+  clearSelectedTodo,
+  deactivateCreateTodoMode,
+  selectTodo,
+} from './todo.actions';
 import { initialState, reducer } from './todo.reducer';
 
 describe('Todo Reducer', () => {
@@ -29,6 +34,22 @@ describe('Todo Reducer', () => {
       );
 
       expect(result).toEqual({ ...initialState, selectedTodoId: null });
+    });
+  });
+
+  describe('Create Todo Mode', () => {
+    it('should activate', () =>
+      expect(reducer(initialState, activateCreateTodoMode())).toEqual({
+        ...initialState,
+        createTodoMode: true,
+      }));
+
+    it('should deactivate', () => {
+      reducer(initialState, activateCreateTodoMode());
+      expect(reducer(initialState, deactivateCreateTodoMode())).toEqual({
+        ...initialState,
+        createTodoMode: false,
+      });
     });
   });
 });

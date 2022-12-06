@@ -1,5 +1,13 @@
-<div class="w-screen h-10 flex bg-orange-400">
+<div class="w-screen h-10 flex justify-between bg-orange-400">
   <span class="app-title flex items-center text-xl pl-6 font-semibold">
     Todos app
   </span>
+  <todos-button
+    *ngIf="(creationModeActivated$ | async) === false"
+    class="my-auto mr-6"
+    text="Create todo"
+    color="accent"
+    (clicked)="create()"
+    id="createButton"
+  ></todos-button>
 </div>

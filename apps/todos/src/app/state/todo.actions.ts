@@ -38,3 +38,11 @@ export const selectTodo = createAction(
 );
 
 export const clearSelectedTodo = createAction('[Todo/API] Clear Selected Todo');
+
+export const activateCreateTodoMode = createAction(
+  '[Todo/API] Activate Create Todo'
+);
+
+export const deactivateCreateTodoMode = createAction(
+  '[Todo/API] Dectivate Create Todo'
+);

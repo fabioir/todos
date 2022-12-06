@@ -9,6 +9,11 @@ const selectSelectedTodoId = createSelector(
   (state: State) => state.selectedTodoId
 );
 
+export const selectCreationModeActive = createSelector(
+  selectTodoState,
+  (state: State) => state.createTodoMode
+);
+
 export const selectUserId = createSelector(
   selectTodoState,
   (state: State) => state.userId

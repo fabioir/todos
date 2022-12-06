@@ -8,6 +8,7 @@ export const todoFeatureKey = 'todo';
 export interface State extends EntityState<Todo> {
   selectedTodoId: number | null;
   userId: number;
+  createTodoMode: boolean;
 }
 
 const adapter: EntityAdapter<Todo> = createEntityAdapter<Todo>();
@@ -15,6 +16,7 @@ const adapter: EntityAdapter<Todo> = createEntityAdapter<Todo>();
 export const initialState: State = adapter.getInitialState({
   selectedTodoId: null,
   userId: 5, // hardcoded until authentication is introduced
+  createTodoMode: false,
 });
 
 export const reducer = createReducer(
@@ -38,6 +40,14 @@ export const reducer = createReducer(
   on(fromTodoActions.clearSelectedTodo, (state) => ({
     ...state,
     selectedTodoId: null,
+  })),
+  on(fromTodoActions.activateCreateTodoMode, (state) => ({
+    ...state,
+    createTodoMode: true,
+  })),
+  on(fromTodoActions.deactivateCreateTodoMode, (state) => ({
+    ...state,
+    createTodoMode: false,
   }))
 );
 

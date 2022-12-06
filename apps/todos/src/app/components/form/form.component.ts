@@ -32,7 +32,7 @@ export class FormComponent {
 
   constructor(private store: Store<fromTodoReducer.State>) {}
 
-  delete() {
+  delete(): void {
     this.store.dispatch(
       fromTodoActions.deleteTodo({
         id: this.todoForm.controls.id.value as number,
