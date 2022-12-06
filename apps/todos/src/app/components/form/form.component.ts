@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { tap } from 'rxjs';
 import { Todo } from '../../models/todo.model';
@@ -19,9 +19,9 @@ export class FormComponent {
     .pipe(tap(this.initializeForm.bind(this)));
 
   public todoForm = new FormGroup({
-    todo: new FormControl<string>(''),
-    userId: new FormControl<number>(0),
-    id: new FormControl<number>(0),
+    todo: new FormControl<string>('', Validators.required),
+    userId: new FormControl<number>(0, Validators.required),
+    id: new FormControl<number>(0, Validators.required),
     completed: new FormControl<boolean>(false),
   });
 
@@ -29,6 +29,26 @@ export class FormComponent {
 
   close(): void {
     this.store.dispatch(fromTodoActions.clearSelectedTodo());
+  }
+
+  edit(): void {
+    this.todoForm.enable();
+    this.todoForm.controls.id.disable();
+  }
+
+  save(): void {
+    this.todoForm.updateValueAndValidity();
+    if (this.todoForm.valid) {
+      this.store.dispatch(
+        fromTodoActions.updateTodo({
+          todo: {
+            ...this.todoForm.value,
+            id: this.todoForm.controls.id.value,
+          } as Todo,
+        })
+      );
+      this.todoForm.disable();
+    }
   }
 
   private initializeForm(selectedTodo: Todo | null): void {

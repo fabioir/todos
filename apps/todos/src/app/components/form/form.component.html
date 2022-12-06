@@ -15,6 +15,7 @@
             type="number"
             formControlName="userId"
             class="w-14 bg-orange-100"
+            [ngClass]="{ 'bg-orange-50': todoForm.enabled }"
           />
         </div>
         <div>
@@ -46,9 +47,15 @@
           id="todo"
           formControlName="todo"
           class="resize-none bg-orange-100"
+          [ngClass]="{ 'bg-orange-50': todoForm.enabled }"
         ></textarea>
       </section>
     </form>
+  </div>
+  <div class="flex justify-end" *ngIf="todoForm.invalid">
+    <span id="errorHint" class="text-orange-900"
+      >Invalid form. Please fill in missing values.</span
+    >
   </div>
   <div class="flex justify-between mt-2 ml-6 mr-6">
     <todos-button
@@ -57,6 +64,10 @@
       text="Close"
       (clicked)="close()"
     ></todos-button>
-    <todos-button id="editButton" text="Edit"></todos-button>
+    <todos-button
+      id="editButton"
+      [text]="todoForm.disabled ? 'Edit' : 'Save'"
+      (clicked)="todoForm.disabled ? edit() : save()"
+    ></todos-button>
   </div>
 </div>
