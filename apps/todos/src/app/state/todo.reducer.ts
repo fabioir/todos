@@ -25,7 +25,7 @@ export const reducer = createReducer(
   on(fromTodoActions.persistUpdatedTodo, (state, action) =>
     adapter.updateOne(action.todo, state)
   ),
-  on(fromTodoActions.deleteTodo, (state, action) =>
+  on(fromTodoActions.persistDeletedTodo, (state, action) =>
     adapter.removeOne(action.id, state)
   ),
   on(fromTodoActions.loadTodos, (state, action) =>

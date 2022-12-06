@@ -65,6 +65,13 @@
       (clicked)="close()"
     ></todos-button>
     <todos-button
+      *ngIf="showDelete"
+      id="deleteButton"
+      color="warn"
+      text="Delete"
+      (clicked)="delete()"
+    ></todos-button>
+    <todos-button
       id="editButton"
       [text]="todoForm.disabled ? 'Edit' : 'Save'"
       (clicked)="todoForm.disabled ? edit() : save()"

@@ -16,7 +16,10 @@ import {
 export class FormComponent {
   public selectedTodo$ = this.store
     .pipe(select(fromTodoSelectors.selectSelectedTodo))
-    .pipe(tap(this.initializeForm.bind(this)));
+    .pipe(
+      tap(this.initializeForm.bind(this)),
+      tap(() => (this.showDelete = this.canShowDelete()))
+    );
 
   public todoForm = new FormGroup({
     todo: new FormControl<string>('', Validators.required),
@@ -25,7 +28,17 @@ export class FormComponent {
     completed: new FormControl<boolean>(false),
   });
 
+  public showDelete = false;
+
   constructor(private store: Store<fromTodoReducer.State>) {}
+
+  delete() {
+    this.store.dispatch(
+      fromTodoActions.deleteTodo({
+        id: this.todoForm.controls.id.value as number,
+      })
+    );
+  }
 
   close(): void {
     this.store.dispatch(fromTodoActions.clearSelectedTodo());
@@ -56,5 +69,11 @@ export class FormComponent {
       this.todoForm.patchValue(selectedTodo);
       this.todoForm.disable();
     }
+  }
+
+  private canShowDelete(): boolean {
+    return ![null, undefined].includes(
+      this.todoForm.controls.id.value as null | undefined
+    );
   }
 }

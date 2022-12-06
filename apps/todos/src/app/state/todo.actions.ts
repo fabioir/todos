@@ -27,6 +27,11 @@ export const deleteTodo = createAction(
   props<{ id: number }>()
 );
 
+export const persistDeletedTodo = createAction(
+  '[Todo/API] Persist Deleted Todo',
+  props<{ id: number }>()
+);
+
 export const selectTodo = createAction(
   '[Todo/API] Select Todo',
   props<{ id: number }>()

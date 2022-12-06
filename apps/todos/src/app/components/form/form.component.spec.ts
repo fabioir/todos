@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { Store } from '@ngrx/store';
+import { MemoizedSelector, Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { fromTodoActions, fromTodoSelectors } from '../../state';
 import { fakeTodoFactory } from '../../utils/todo.fakes';
@@ -16,6 +16,7 @@ describe('FormComponent', () => {
   let fixture: ComponentFixture<FormComponent>;
   let mockStore: MockStore;
   let dispatchSpy: jest.SpyInstance;
+  let selectSelectedTodoSpy: MemoizedSelector<unknown, unknown>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,7 +26,10 @@ describe('FormComponent', () => {
     }).compileComponents();
 
     mockStore = TestBed.inject(Store) as MockStore;
-    mockStore.overrideSelector(fromTodoSelectors.selectSelectedTodo, fakeTodo);
+    selectSelectedTodoSpy = mockStore.overrideSelector(
+      fromTodoSelectors.selectSelectedTodo,
+      fakeTodo
+    ) as unknown as MemoizedSelector<unknown, unknown>;
 
     fixture = TestBed.createComponent(FormComponent);
     component = fixture.componentInstance;
@@ -123,6 +127,28 @@ describe('FormComponent', () => {
       expect(dispatchSpy).toHaveBeenCalledWith(
         fromTodoActions.clearSelectedTodo()
       );
+    });
+
+    it('should dispatch delete action', () => {
+      const deleteButton = fixture.debugElement.query(
+        By.css('#deleteButton > button')
+      );
+      deleteButton.nativeElement.click();
+
+      expect(dispatchSpy).toHaveBeenCalledWith(
+        fromTodoActions.deleteTodo({ id: fakeTodo.id })
+      );
+    });
+
+    it('should remove delete button if there is no value for id', () => {
+      selectSelectedTodoSpy.setResult({ ...fakeTodo, id: undefined });
+      mockStore.refreshState();
+      fixture.detectChanges();
+
+      const deleteButton = fixture.debugElement.query(
+        By.css('#deleteButton > button')
+      );
+      expect(deleteButton).toBeNull();
     });
   });
 });

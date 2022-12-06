@@ -38,4 +38,18 @@ export class TodoEffects {
       )
     )
   );
+
+  deleteTodo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromTodoActions.deleteTodo.type),
+      switchMap((action: Action & { id: number }) =>
+        this.todosService.delete(action.id)
+      ),
+      map((deletedTodo: Todo) =>
+        fromTodoActions.persistDeletedTodo({
+          id: deletedTodo.id,
+        })
+      )
+    )
+  );
 }

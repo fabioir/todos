@@ -24,7 +24,11 @@ describe('TodoEffects', () => {
         provideMockActions(() => actions$),
         {
           provide: TodosService,
-          useValue: { findAll: () => of(fakeAllFoundTodos), update: jest.fn() },
+          useValue: {
+            findAll: () => of(fakeAllFoundTodos),
+            update: jest.fn(),
+            delete: jest.fn(),
+          },
         },
       ],
     });
@@ -70,6 +74,31 @@ describe('TodoEffects', () => {
         );
         expect(todosService.update).toHaveBeenCalledWith(updatedFakeTodo);
         (todosService.update as unknown as jest.SpyInstance).mockRestore();
+        done();
+      });
+    });
+  });
+
+  describe('deleteTodo', () => {
+    it('should delete todo and dispatch persist action', (done) => {
+      const todosService = TestBed.inject(TodosService);
+      (todosService.delete as unknown as jest.SpyInstance).mockReturnValueOnce(
+        of(fakeTodo)
+      );
+
+      actions$ = of({
+        type: fromTodoActions.deleteTodo.type,
+        id: fakeTodo.id,
+      } as unknown as Action<unknown>);
+
+      effects.deleteTodo$.subscribe((action) => {
+        expect(action).toEqual(
+          fromTodoActions.persistDeletedTodo({
+            id: fakeTodo.id,
+          })
+        );
+        expect(todosService.delete).toHaveBeenCalledWith(fakeTodo.id);
+        (todosService.delete as unknown as jest.SpyInstance).mockRestore();
         done();
       });
     });
