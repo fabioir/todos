@@ -75,4 +75,17 @@ describe('ListComponent', () => {
     );
     dispatchSpy.mockRestore();
   });
+
+  it('should dispatch select todo action', () => {
+    const dispatchSpy = jest.spyOn(TestBed.inject(Store), 'dispatch');
+
+    component.selectTodo(fakeTodo);
+
+    expect(dispatchSpy).toHaveBeenCalledWith(
+      fromTodoActions.selectTodo({
+        id: fakeTodo.id,
+      })
+    );
+    dispatchSpy.mockRestore();
+  });
 });

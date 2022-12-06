@@ -48,4 +48,25 @@ describe('ItemComponent', () => {
     const checkbox = fixture.debugElement.query(By.css('input[type=checkbox]'));
     checkbox.nativeElement.click();
   });
+
+  describe('Select', () => {
+    it('should hide select button when selected', () => {
+      component.selected = true;
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.css('#selectButton'))).toBeNull();
+    });
+
+    it('should select todo', (done) => {
+      fixture.detectChanges();
+
+      component.todoSelected.pipe(take(1)).subscribe((selectedTodo) => {
+        expect(selectedTodo).toBe(fakeTodo);
+        done();
+      });
+
+      const selectButton = fixture.debugElement.query(By.css('#selectButton'));
+      selectButton.nativeElement.click();
+    });
+  });
 });

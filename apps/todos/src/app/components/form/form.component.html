@@ -1,0 +1,24 @@
+<div class="pl-3 pr-3 pb-3 h-full flex flex-col">
+  <span class="ml-6 text-lg mb-3 font-semibold">Details</span>
+  <div
+    class="bg-orange-100 p-3 grow rounded"
+    *ngIf="selectedTodo$ | async as selectedTodo"
+  >
+    <p>{{ selectedTodo.todo }}</p>
+  </div>
+  <div class="flex justify-between mt-2 ml-6 mr-6">
+    <button
+      id="closeButton"
+      (click)="close()"
+      class="bg-red-400 hover:bg-red-500 rounded pr-1 pl-1"
+    >
+      <span>Close</span>
+    </button>
+    <button
+      id="editButton"
+      class="bg-orange-300 hover:bg-orange-500 rounded pr-1 pl-1"
+    >
+      <span>Edit</span>
+    </button>
+  </div>
+</div>

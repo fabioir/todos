@@ -18,6 +18,7 @@ export class ItemComponent implements OnChanges {
   @Input() selected = false;
 
   @Output() todoUpdated = new EventEmitter<Todo>();
+  @Output() todoSelected = new EventEmitter<Todo>();
 
   public completed!: boolean;
 
@@ -27,5 +28,9 @@ export class ItemComponent implements OnChanges {
 
   completedToggled(): void {
     this.todoUpdated.emit({ ...this.todo, completed: this.completed });
+  }
+
+  selectTodo(): void {
+    this.todoSelected.emit(this.todo);
   }
 }

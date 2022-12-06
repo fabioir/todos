@@ -12,9 +12,16 @@ import { ListComponent } from './components/list/list.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { TodoEffects } from './effects/todo.effects';
 import { fromTodoReducer } from './state';
+import { FormComponent } from './components/form/form.component';
 
 @NgModule({
-  declarations: [AppComponent, ToolbarComponent, ListComponent, ItemComponent],
+  declarations: [
+    AppComponent,
+    ToolbarComponent,
+    ListComponent,
+    ItemComponent,
+    FormComponent,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,

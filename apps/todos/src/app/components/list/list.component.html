@@ -4,6 +4,7 @@
       [todo]="todo"
       [selected]="(selectedTodo$ | async)?.id === todo.id"
       (todoUpdated)="updateTodo($event)"
+      (todoSelected)="selectTodo($event)"
     ></todos-item>
   </div>
 </div>

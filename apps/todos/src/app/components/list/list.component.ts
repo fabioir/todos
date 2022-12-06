@@ -26,4 +26,12 @@ export class ListComponent {
       })
     );
   }
+
+  selectTodo(selectedTodo: Todo): void {
+    this.store.dispatch(
+      fromTodoActions.selectTodo({
+        id: selectedTodo.id,
+      })
+    );
+  }
 }
