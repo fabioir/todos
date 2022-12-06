@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { take } from 'rxjs';
 import { fakeTodoFactory } from '../../utils/todo.fakes';
+import { ButtonComponent } from '../button/button.component';
 
 import { ItemComponent } from './item.component';
 
@@ -14,7 +15,7 @@ describe('ItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemComponent],
+      declarations: [ItemComponent, ButtonComponent],
       imports: [FormsModule],
     }).compileComponents();
 
@@ -65,7 +66,9 @@ describe('ItemComponent', () => {
         done();
       });
 
-      const selectButton = fixture.debugElement.query(By.css('#selectButton'));
+      const selectButton = fixture.debugElement.query(
+        By.css('#selectButton > button')
+      );
       selectButton.nativeElement.click();
     });
   });

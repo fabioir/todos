@@ -3,6 +3,7 @@ import { By } from '@angular/platform-browser';
 import { MemoizedSelector, Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { AppComponent } from './app.component';
+import { ButtonComponent } from './components/button/button.component';
 import { FormComponent } from './components/form/form.component';
 import { ItemComponent } from './components/item/item.component';
 import { ListComponent } from './components/list/list.component';
@@ -23,6 +24,7 @@ describe('AppComponent', () => {
         ListComponent,
         ItemComponent,
         FormComponent,
+        ButtonComponent,
       ],
       providers: [provideMockStore({})],
     }).compileComponents();

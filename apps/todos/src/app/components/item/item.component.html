@@ -12,12 +12,11 @@
     class="overflow-ellipsis whitespace-nowrap overflow-hidden pointer-events-none"
     >{{ todo.todo }}</span
   >
-  <button
+  <todos-button
     *ngIf="!selected"
     id="selectButton"
-    class="bg-orange-300 hover:bg-orange-500 rounded px-1 ml-auto mr-3"
-    (click)="selectTodo()"
-  >
-    <span class="text-sm">Details</span>
-  </button>
+    class="mr-3 ml-auto"
+    text="Details"
+    (clicked)="selectTodo()"
+  ></todos-button>
 </div>

@@ -13,6 +13,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { TodoEffects } from './effects/todo.effects';
 import { fromTodoReducer } from './state';
 import { FormComponent } from './components/form/form.component';
+import { ButtonComponent } from './components/button/button.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { FormComponent } from './components/form/form.component';
     ListComponent,
     ItemComponent,
     FormComponent,
+    ButtonComponent,
   ],
   imports: [
     BrowserModule,

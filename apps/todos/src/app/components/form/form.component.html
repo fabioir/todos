@@ -7,18 +7,12 @@
     <p>{{ selectedTodo.todo }}</p>
   </div>
   <div class="flex justify-between mt-2 ml-6 mr-6">
-    <button
+    <todos-button
       id="closeButton"
-      (click)="close()"
-      class="bg-red-400 hover:bg-red-500 rounded pr-1 pl-1"
-    >
-      <span>Close</span>
-    </button>
-    <button
-      id="editButton"
-      class="bg-orange-300 hover:bg-orange-500 rounded pr-1 pl-1"
-    >
-      <span>Edit</span>
-    </button>
+      color="warn"
+      text="Close"
+      (clicked)="close()"
+    ></todos-button>
+    <todos-button id="editButton" text="Edit"></todos-button>
   </div>
 </div>

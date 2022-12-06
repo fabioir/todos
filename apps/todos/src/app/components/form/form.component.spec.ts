@@ -3,6 +3,7 @@ import { By } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { fromTodoActions } from '../../state';
+import { ButtonComponent } from '../button/button.component';
 
 import { FormComponent } from './form.component';
 
@@ -13,7 +14,7 @@ describe('FormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FormComponent],
+      declarations: [FormComponent, ButtonComponent],
       providers: [provideMockStore({})],
     }).compileComponents();
 
@@ -36,7 +37,9 @@ describe('FormComponent', () => {
     afterEach(() => dispatchSpy.mockRestore());
 
     it('should clear selected todo', () => {
-      const closeButton = fixture.debugElement.query(By.css('#closeButton'));
+      const closeButton = fixture.debugElement.query(
+        By.css('#closeButton > button')
+      );
       closeButton.nativeElement.click();
 
       expect(dispatchSpy).toHaveBeenCalledWith(
