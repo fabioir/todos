@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MemoizedSelector, Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -26,6 +27,7 @@ describe('AppComponent', () => {
         FormComponent,
         ButtonComponent,
       ],
+      imports: [ReactiveFormsModule],
       providers: [provideMockStore({})],
     }).compileComponents();
   });
