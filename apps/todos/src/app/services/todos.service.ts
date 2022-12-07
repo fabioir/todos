@@ -15,14 +15,6 @@ export class TodosService {
     return this.http.get<AllFoundTodos>(`${environment.apiRoot}/todos`);
   }
 
-  findOne(id: number): Observable<Todo> {
-    if (isNaN(id)) {
-      throw 'Invalid id';
-    }
-
-    return this.http.get<Todo>(`${environment.apiRoot}/todos/${id}`);
-  }
-
   create(draftTodo: DraftTodo): Observable<Todo> {
     if (!draftTodo.todo) {
       throw 'Missing content';
