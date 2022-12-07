@@ -78,8 +78,8 @@ describe('TodosService', () => {
         todo: 'Feed the fish',
       };
 
-      service.update(updatedTodo).subscribe((createdTodo) => {
-        expect(createdTodo).toEqual(updatedTodo);
+      service.update(updatedTodo).subscribe((updatedTodo) => {
+        expect(updatedTodo).toEqual(updatedTodo);
         done();
       });
 
@@ -99,14 +99,30 @@ describe('TodosService', () => {
         todo: 'Feed the fish',
       };
 
-      service.update(updatedTodo).subscribe((createdTodo) => {
-        expect(createdTodo).toEqual(updatedTodo);
+      service.update(updatedTodo).subscribe((updatedTodo) => {
+        expect(updatedTodo).toEqual(updatedTodo);
         done();
       });
 
       httpTestingController
         .expectOne((req: HttpRequest<Todo>) => req.body?.id === undefined)
         .flush(updatedTodo);
+    });
+
+    it('should patch API issue of returning id as string', (done) => {
+      const updatedTodo: Todo = {
+        ...fakeTodo,
+        todo: 'Feed the fish',
+      };
+
+      service.update(updatedTodo).subscribe((updatedTodo) => {
+        expect(typeof updatedTodo.id).toBe('number');
+        done();
+      });
+
+      httpTestingController
+        .expectOne((req: HttpRequest<Todo>) => req.body?.id === undefined)
+        .flush({ updatedTodo, id: updatedTodo.id + '' });
     });
   });
 

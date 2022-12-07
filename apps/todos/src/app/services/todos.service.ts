@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AllFoundTodos, DraftTodo, Todo } from '../models/todo.model';
 
 import { HttpClient } from '@angular/common/http';
@@ -28,10 +28,12 @@ export class TodosService {
       throw 'Missing content';
     }
 
-    return this.http.put<Todo>(
-      `${environment.apiRoot}/todos/${updatedTodo.id}`,
-      { ...updatedTodo, id: undefined }
-    );
+    return this.http
+      .put<Todo>(`${environment.apiRoot}/todos/${updatedTodo.id}`, {
+        ...updatedTodo,
+        id: undefined,
+      })
+      .pipe(map((todo) => this.fixIdType(todo)));
   }
 
   delete(id: number): Observable<Todo> {
@@ -40,5 +42,10 @@ export class TodosService {
     }
 
     return this.http.delete<Todo>(`${environment.apiRoot}/todos/${id}`);
+  }
+
+  private fixIdType(todo: Todo): Todo {
+    todo.id = Number(todo.id);
+    return todo;
   }
 }
