@@ -1,6 +1,6 @@
 import { Update } from '@ngrx/entity';
 import { createAction, props } from '@ngrx/store';
-import { Todo } from '../models/todo.model';
+import { DraftTodo, Todo } from '../models/todo.model';
 
 export const loadTodos = createAction(
   '[Todo/API] Load Todos',
@@ -9,6 +9,11 @@ export const loadTodos = createAction(
 
 export const addTodo = createAction(
   '[Todo/API] Add Todo',
+  props<{ todo: DraftTodo }>()
+);
+
+export const persistAddedTodo = createAction(
+  '[Todo/API] Persist Added Todo',
   props<{ todo: Todo }>()
 );
 
@@ -44,5 +49,5 @@ export const activateCreateTodoMode = createAction(
 );
 
 export const deactivateCreateTodoMode = createAction(
-  '[Todo/API] Dectivate Create Todo'
+  '[Todo/API] Deactivate Create Todo'
 );

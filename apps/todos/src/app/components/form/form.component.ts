@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { Todo } from '../../models/todo.model';
+import { DraftTodo, Todo } from '../../models/todo.model';
 import {
   fromTodoActions,
   fromTodoReducer,
@@ -18,19 +18,27 @@ export class FormComponent implements OnInit, OnDestroy {
   private selectedTodo$ = this.store.pipe(
     select(fromTodoSelectors.selectSelectedTodo)
   );
+  private selectCreationModeActive$ = this.store.pipe(
+    select(fromTodoSelectors.selectCreationModeActive)
+  );
 
   public todoForm = new FormGroup({
     todo: new FormControl<string>('', Validators.required),
-    userId: new FormControl<number>(0, Validators.required),
+    userId: new FormControl<number>(1, [
+      Validators.required,
+      Validators.min(1),
+    ]),
     id: new FormControl(),
     completed: new FormControl<boolean>(false),
   });
   public showDelete = false;
+  public creationMode = false;
 
   constructor(private store: Store<fromTodoReducer.State>) {}
 
   ngOnInit(): void {
     this.subscriptions.add(this.subscribeToSelectedTodo());
+    this.subscriptions.add(this.subscribeToSelectCreationModeActive());
   }
 
   ngOnDestroy(): void {
@@ -57,36 +65,61 @@ export class FormComponent implements OnInit, OnDestroy {
 
   save(): void {
     this.todoForm.updateValueAndValidity();
+    this.todoForm.markAsDirty();
     if (this.todoForm.valid) {
-      this.store.dispatch(
-        fromTodoActions.updateTodo({
-          todo: {
-            ...this.todoForm.value,
-            id: this.todoForm.controls.id.value,
-          } as Todo,
-        })
-      );
+      this.creationMode ? this.dispatchCreate() : this.dispatchUpdate();
       this.todoForm.disable();
     }
+  }
+
+  private dispatchUpdate(): void {
+    this.store.dispatch(
+      fromTodoActions.updateTodo({
+        todo: {
+          ...this.todoForm.value,
+          id: this.todoForm.controls.id.value,
+        } as Todo,
+      })
+    );
+  }
+
+  private dispatchCreate(): void {
+    this.store.dispatch(
+      fromTodoActions.addTodo({
+        todo: {
+          ...this.todoForm.value,
+          id: undefined,
+        } as DraftTodo,
+      })
+    );
+    this.close();
   }
 
   private initializeForm(selectedTodo: Todo | null): void {
     if (selectedTodo) {
       this.todoForm.patchValue(selectedTodo);
       this.todoForm.disable();
+    } else {
+      this.todoForm.patchValue({
+        todo: '',
+        id: null,
+        userId: 0,
+        completed: false,
+      });
+      this.todoForm.enable();
     }
-  }
-
-  private canShowDelete(): boolean {
-    return ![null, undefined].includes(
-      this.todoForm.controls.id.value as null | undefined
-    );
   }
 
   private subscribeToSelectedTodo(): Subscription {
     return this.selectedTodo$.subscribe((todo: Todo | null) => {
       this.initializeForm(todo);
-      this.showDelete = this.canShowDelete();
+      this.showDelete = !!todo;
     });
+  }
+
+  private subscribeToSelectCreationModeActive(): Subscription {
+    return this.selectCreationModeActive$.subscribe(
+      (creationModeActive: boolean) => (this.creationMode = creationModeActive)
+    );
   }
 }

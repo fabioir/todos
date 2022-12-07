@@ -3,6 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MemoizedSelector, Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { DraftTodo } from '../../models/todo.model';
 import { fromTodoActions, fromTodoSelectors } from '../../state';
 import { fakeTodoFactory } from '../../utils/todo.fakes';
 import { ButtonComponent } from '../button/button.component';
@@ -18,6 +19,7 @@ describe('FormComponent', () => {
   let mockStore: MockStore;
   let dispatchSpy: jest.SpyInstance;
   let selectSelectedTodoSpy: MemoizedSelector<unknown, unknown>;
+  let selectCreationModeActiveSpy: MemoizedSelector<unknown, unknown>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -30,6 +32,10 @@ describe('FormComponent', () => {
     selectSelectedTodoSpy = mockStore.overrideSelector(
       fromTodoSelectors.selectSelectedTodo,
       fakeTodo
+    ) as unknown as MemoizedSelector<unknown, unknown>;
+    selectCreationModeActiveSpy = mockStore.overrideSelector(
+      fromTodoSelectors.selectCreationModeActive,
+      false
     ) as unknown as MemoizedSelector<unknown, unknown>;
 
     fixture = TestBed.createComponent(FormComponent);
@@ -69,14 +75,28 @@ describe('FormComponent', () => {
       expect(completed.nativeElement.disabled).toBe(true);
       expect(content.nativeElement.disabled).toBe(true);
     });
+
+    it('should display details title', () => {
+      const title = fixture.debugElement.query(By.css('.title'));
+      expect(title.nativeElement.textContent.trim()).toBe('Details');
+    });
+
+    it('should display create title', () => {
+      selectCreationModeActiveSpy.setResult(true);
+      mockStore.refreshState();
+      fixture.detectChanges();
+
+      const title = fixture.debugElement.query(By.css('.title'));
+      expect(title.nativeElement.textContent.trim()).toBe('Create');
+    });
   });
 
-  describe('Edit', () => {
+  describe('Create and Edit', () => {
     it('should enable all but id fields', () => {
-      const editButton = fixture.debugElement.query(
-        By.css('#editButton > button')
+      const submitButton = fixture.debugElement.query(
+        By.css('#submitButton > button')
       );
-      editButton.nativeElement.click();
+      submitButton.nativeElement.click();
 
       const userId = fixture.debugElement.query(By.css('#user-id'));
       const id = fixture.debugElement.query(By.css('#todo-id'));
@@ -90,27 +110,65 @@ describe('FormComponent', () => {
     });
 
     it('should dispatch update action', () => {
-      const editButton = fixture.debugElement.query(
-        By.css('#editButton > button')
+      const submitButton = fixture.debugElement.query(
+        By.css('#submitButton > button')
       );
-      editButton.nativeElement.click();
-      editButton.nativeElement.click();
+      submitButton.nativeElement.click();
+      submitButton.nativeElement.click();
 
       expect(dispatchSpy).toHaveBeenCalledWith(
         fromTodoActions.updateTodo({ todo: fakeTodo })
       );
     });
 
-    it('should prevent dispatch if form is invalid', () => {
-      const editButton = fixture.debugElement.query(
-        By.css('#editButton > button')
+    it('should dispatch add todo action', () => {
+      selectSelectedTodoSpy.setResult(null);
+      selectCreationModeActiveSpy.setResult(true);
+      mockStore.refreshState();
+      fixture.detectChanges();
+
+      component.todoForm.setValue({ ...fakeTodo });
+
+      const submitButton = fixture.debugElement.query(
+        By.css('#submitButton > button')
       );
-      editButton.nativeElement.click();
+      submitButton.nativeElement.click();
+
+      expect(dispatchSpy).toHaveBeenCalledWith(
+        fromTodoActions.addTodo({
+          todo: { ...fakeTodo, id: undefined } as DraftTodo,
+        })
+      );
+    });
+
+    it('should not dispatch add todo action if form is invalid', () => {
+      selectSelectedTodoSpy.setResult(null);
+      selectCreationModeActiveSpy.setResult(true);
+      mockStore.refreshState();
+      fixture.detectChanges();
+
+      component.todoForm.setValue({ ...fakeTodo, todo: '' });
+
+      const submitButton = fixture.debugElement.query(
+        By.css('#submitButton > button')
+      );
+      submitButton.nativeElement.click();
+
+      expect(dispatchSpy).not.toHaveBeenCalledWith(
+        fromTodoActions.addTodo({ todo: fakeTodo })
+      );
+    });
+
+    it('should prevent dispatch if form is invalid', () => {
+      const submitButton = fixture.debugElement.query(
+        By.css('#submitButton > button')
+      );
+      submitButton.nativeElement.click();
 
       component.todoForm.controls.todo.setValue('');
       fixture.detectChanges();
 
-      editButton.nativeElement.click();
+      submitButton.nativeElement.click();
 
       expect(dispatchSpy).not.toHaveBeenCalled();
     });
@@ -142,8 +200,8 @@ describe('FormComponent', () => {
       );
     });
 
-    it('should remove delete button if there is no value for id', () => {
-      selectSelectedTodoSpy.setResult({ ...fakeTodo, id: undefined });
+    it('should remove delete button if there is no todo selected', () => {
+      selectSelectedTodoSpy.setResult(null);
       mockStore.refreshState();
       fixture.detectChanges();
 

@@ -7,7 +7,7 @@ import {
 } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { map, switchMap } from 'rxjs';
-import { AllFoundTodos, Todo } from '../models/todo.model';
+import { AllFoundTodos, DraftTodo, Todo } from '../models/todo.model';
 import { TodosService } from '../services/todos.service';
 import { fromTodoActions } from '../state';
 
@@ -50,6 +50,34 @@ export class TodoEffects {
           id: deletedTodo.id,
         })
       )
+    )
+  );
+
+  addTodo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromTodoActions.addTodo.type),
+      switchMap((action: Action & { todo: DraftTodo }) =>
+        this.todosService.create(action.todo)
+      ),
+      map((createdTodo: Todo) =>
+        fromTodoActions.persistAddedTodo({
+          todo: createdTodo,
+        })
+      )
+    )
+  );
+
+  activateCreateMode$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromTodoActions.activateCreateTodoMode.type),
+      map(() => fromTodoActions.clearSelectedTodo())
+    )
+  );
+
+  selectTodo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromTodoActions.selectTodo.type),
+      map(() => fromTodoActions.deactivateCreateTodoMode())
     )
   );
 }

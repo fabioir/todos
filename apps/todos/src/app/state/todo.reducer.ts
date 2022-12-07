@@ -21,7 +21,7 @@ export const initialState: State = adapter.getInitialState({
 
 export const reducer = createReducer(
   initialState,
-  on(fromTodoActions.addTodo, (state, action) =>
+  on(fromTodoActions.persistAddedTodo, (state, action) =>
     adapter.addOne(action.todo, state)
   ),
   on(fromTodoActions.persistUpdatedTodo, (state, action) =>

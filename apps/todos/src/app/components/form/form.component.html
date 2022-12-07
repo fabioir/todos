@@ -1,5 +1,7 @@
 <div class="pl-3 pr-3 pb-3 h-full flex flex-col">
-  <span class="ml-6 text-lg mb-3 font-semibold">Details</span>
+  <span class="ml-6 text-lg mb-3 font-semibold title">{{
+    creationMode ? 'Create' : 'Details'
+  }}</span>
   <todos-form-fields [todoForm]="todoForm"></todos-form-fields>
   <div class="flex justify-between mt-2 ml-6 mr-6">
     <todos-button
@@ -16,7 +18,7 @@
       (clicked)="delete()"
     ></todos-button>
     <todos-button
-      id="editButton"
+      id="submitButton"
       [text]="todoForm.disabled ? 'Edit' : 'Save'"
       (clicked)="todoForm.disabled ? edit() : save()"
     ></todos-button>

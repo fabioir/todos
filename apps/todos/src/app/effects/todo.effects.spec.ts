@@ -28,6 +28,7 @@ describe('TodoEffects', () => {
             findAll: () => of(fakeAllFoundTodos),
             update: jest.fn(),
             delete: jest.fn(),
+            create: jest.fn(),
           },
         },
       ],
@@ -54,7 +55,7 @@ describe('TodoEffects', () => {
   });
 
   describe('updateTodo', () => {
-    it('should update todo and dispatch persist action', (done) => {
+    it('should update todo and dispatch persist updated action', (done) => {
       const todosService = TestBed.inject(TodosService);
       const updatedFakeTodo: Todo = { ...fakeTodo, todo: 'Updated TODO' };
       (todosService.update as unknown as jest.SpyInstance).mockReturnValueOnce(
@@ -80,7 +81,7 @@ describe('TodoEffects', () => {
   });
 
   describe('deleteTodo', () => {
-    it('should delete todo and dispatch persist action', (done) => {
+    it('should delete todo and dispatch persist deleted action', (done) => {
       const todosService = TestBed.inject(TodosService);
       (todosService.delete as unknown as jest.SpyInstance).mockReturnValueOnce(
         of(fakeTodo)
@@ -99,6 +100,58 @@ describe('TodoEffects', () => {
         );
         expect(todosService.delete).toHaveBeenCalledWith(fakeTodo.id);
         (todosService.delete as unknown as jest.SpyInstance).mockRestore();
+        done();
+      });
+    });
+  });
+
+  describe('addTodo', () => {
+    it('should create a todo and dispatch persist addition action', (done) => {
+      const todosService = TestBed.inject(TodosService);
+      (todosService.create as unknown as jest.SpyInstance).mockReturnValueOnce(
+        of(fakeTodo)
+      );
+
+      actions$ = of({
+        type: fromTodoActions.addTodo.type,
+        todo: { ...fakeTodo, id: undefined },
+      } as unknown as Action<unknown>);
+
+      effects.addTodo$.subscribe((action) => {
+        expect(action).toEqual(
+          fromTodoActions.persistAddedTodo({
+            todo: fakeTodo,
+          })
+        );
+        expect(todosService.create).toHaveBeenCalledWith({
+          ...fakeTodo,
+          id: undefined,
+        });
+        (todosService.create as unknown as jest.SpyInstance).mockRestore();
+        done();
+      });
+    });
+  });
+
+  describe('create and selected modes', () => {
+    it('should clear selected todo when entering creation mode', (done) => {
+      actions$ = of({
+        type: fromTodoActions.activateCreateTodoMode.type,
+      } as unknown as Action<unknown>);
+
+      effects.activateCreateMode$.subscribe((action) => {
+        expect(action).toEqual(fromTodoActions.clearSelectedTodo());
+        done();
+      });
+    });
+
+    it('should disable creation mode when a todo is selected', (done) => {
+      actions$ = of({
+        type: fromTodoActions.selectTodo.type,
+      } as unknown as Action<unknown>);
+
+      effects.selectTodo$.subscribe((action) => {
+        expect(action).toEqual(fromTodoActions.deactivateCreateTodoMode());
         done();
       });
     });
