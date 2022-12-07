@@ -2,6 +2,7 @@ name: Todos CI
 on: push
 jobs:
   validate_and_build:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,12 +25,9 @@ jobs:
       - name: Build
         run: npm run build
 
-  e2e_tests:
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    steps:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+
       - name: Run Playwright tests
         run: npm run test:e2e
       - uses: actions/upload-artifact@v3
