@@ -1,7 +1,10 @@
 <div
   data-testid="todo-item"
-  class="h-8 bg-orange-100 rounded mb-1 flex items-center hover:bg-orange-50"
-  [ngClass]="{ 'bg-orange-300 hover:bg-orange-300': selected }"
+  class="h-8 rounded mb-1 flex items-center"
+  [ngClass]="{
+    'bg-orange-300': selected,
+    'bg-orange-100 hover:bg-orange-50': !selected
+  }"
 >
   <input
     type="checkbox"
@@ -15,6 +18,7 @@
   >
   <todos-button
     *ngIf="!selected"
+    data-testid="details-button"
     id="selectButton"
     class="mr-3 ml-auto"
     text="Details"

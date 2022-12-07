@@ -23,3 +23,7 @@ Components are better isolated from side effects by introducing @ngrx/effects [e
 On every push, github actions executes some checks and builds the project using the dependencies indicated in the package-lock.json.
 
 See [main.yml](.github/workflows/main.yml)
+
+## UI Tests
+
+[Playwright tests](tests/todo.spec.ts) check in CI time that the fundamental features of the application work as expected.
