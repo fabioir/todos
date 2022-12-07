@@ -1,0 +1,52 @@
+<div class="bg-orange-100 p-6 grow rounded">
+  <form [formGroup]="todoForm" class="flex flex-col justify-between h-full">
+    <section class="flex justify-between">
+      <div>
+        <label for="user-id" class="text-lg text-orange-900 font-semibold"
+          >User Id:
+        </label>
+        <input
+          id="user-id"
+          type="number"
+          formControlName="userId"
+          class="w-14 bg-orange-100"
+          [ngClass]="{ 'bg-orange-50': todoForm.enabled }"
+        />
+      </div>
+      <div>
+        <label for="todo-id" class="text-lg text-orange-900 font-semibold"
+          >Todo Id:
+        </label>
+        <input
+          id="todo-id"
+          type="number"
+          formControlName="id"
+          class="w-14 bg-orange-100"
+        />
+      </div>
+    </section>
+    <section class="flex items-center">
+      <label for="completed" class="mr-1 text-lg text-orange-900 font-semibold"
+        >Completed</label
+      >
+      <input id="completed" type="checkbox" formControlName="completed" />
+    </section>
+    <section class="h-36 flex flex-col">
+      <label for="todo" class="text-lg text-orange-900 font-semibold"
+        >Todo:
+      </label>
+      <textarea
+        rows="10"
+        id="todo"
+        formControlName="todo"
+        class="resize-none bg-orange-100"
+        [ngClass]="{ 'bg-orange-50': todoForm.enabled }"
+      ></textarea>
+    </section>
+  </form>
+</div>
+<div class="flex justify-end" *ngIf="todoForm.invalid && todoForm.dirty">
+  <span id="errorHint" class="text-orange-900"
+    >Invalid form. Please fill in missing values.</span
+  >
+</div>

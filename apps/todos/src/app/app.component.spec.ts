@@ -5,6 +5,7 @@ import { MemoizedSelector, Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { AppComponent } from './app.component';
 import { ButtonComponent } from './components/button/button.component';
+import { FormFieldsComponent } from './components/form-fields/form-fields.component';
 import { FormComponent } from './components/form/form.component';
 import { ItemComponent } from './components/item/item.component';
 import { ListComponent } from './components/list/list.component';
@@ -26,6 +27,7 @@ describe('AppComponent', () => {
         ItemComponent,
         FormComponent,
         ButtonComponent,
+        FormFieldsComponent,
       ],
       imports: [ReactiveFormsModule],
       providers: [provideMockStore({})],

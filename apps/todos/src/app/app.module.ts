@@ -14,6 +14,7 @@ import { ListComponent } from './components/list/list.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { TodoEffects } from './effects/todo.effects';
 import { fromTodoReducer } from './state';
+import { FormFieldsComponent } from './components/form-fields/form-fields.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { fromTodoReducer } from './state';
     ItemComponent,
     FormComponent,
     ButtonComponent,
+    FormFieldsComponent,
   ],
   imports: [
     BrowserModule,

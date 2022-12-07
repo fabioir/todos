@@ -6,6 +6,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { fromTodoActions, fromTodoSelectors } from '../../state';
 import { fakeTodoFactory } from '../../utils/todo.fakes';
 import { ButtonComponent } from '../button/button.component';
+import { FormFieldsComponent } from '../form-fields/form-fields.component';
 
 import { FormComponent } from './form.component';
 
@@ -20,7 +21,7 @@ describe('FormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FormComponent, ButtonComponent],
+      declarations: [FormComponent, ButtonComponent, FormFieldsComponent],
       imports: [ReactiveFormsModule],
       providers: [provideMockStore({})],
     }).compileComponents();
@@ -100,7 +101,7 @@ describe('FormComponent', () => {
       );
     });
 
-    it('should show error hint and prevent dispatch if form is invalid', () => {
+    it('should prevent dispatch if form is invalid', () => {
       const editButton = fixture.debugElement.query(
         By.css('#editButton > button')
       );
@@ -110,9 +111,7 @@ describe('FormComponent', () => {
       fixture.detectChanges();
 
       editButton.nativeElement.click();
-      const errorHint = fixture.debugElement.query(By.css('#errorHint'));
 
-      expect(errorHint).toBeTruthy();
       expect(dispatchSpy).not.toHaveBeenCalled();
     });
   });

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { tap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Todo } from '../../models/todo.model';
 import {
   fromTodoActions,
@@ -13,13 +13,11 @@ import {
   selector: 'todos-form',
   templateUrl: './form.component.html',
 })
-export class FormComponent {
-  public selectedTodo$ = this.store
-    .pipe(select(fromTodoSelectors.selectSelectedTodo))
-    .pipe(
-      tap(this.initializeForm.bind(this)),
-      tap(() => (this.showDelete = this.canShowDelete()))
-    );
+export class FormComponent implements OnInit, OnDestroy {
+  private subscriptions = new Subscription();
+  private selectedTodo$ = this.store.pipe(
+    select(fromTodoSelectors.selectSelectedTodo)
+  );
 
   public todoForm = new FormGroup({
     todo: new FormControl<string>('', Validators.required),
@@ -27,10 +25,17 @@ export class FormComponent {
     id: new FormControl<number>(0, Validators.required),
     completed: new FormControl<boolean>(false),
   });
-
   public showDelete = false;
 
   constructor(private store: Store<fromTodoReducer.State>) {}
+
+  ngOnInit(): void {
+    this.subscriptions.add(this.subscribeToSelectedTodo());
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 
   delete(): void {
     this.store.dispatch(
@@ -75,5 +80,12 @@ export class FormComponent {
     return ![null, undefined].includes(
       this.todoForm.controls.id.value as null | undefined
     );
+  }
+
+  private subscribeToSelectedTodo(): Subscription {
+    return this.selectedTodo$.subscribe((todo: Todo | null) => {
+      this.initializeForm(todo);
+      this.showDelete = this.canShowDelete();
+    });
   }
 }
