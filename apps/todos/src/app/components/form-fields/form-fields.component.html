@@ -13,7 +13,9 @@
           [ngClass]="{ 'bg-orange-50': todoForm.enabled }"
         />
       </div>
-      <div>
+      <div
+        *ngIf="todoForm.value.id !== null && todoForm.value.id !== undefined"
+      >
         <label for="todo-id" class="text-lg text-orange-900 font-semibold"
           >Todo Id:
         </label>

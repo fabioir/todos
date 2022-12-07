@@ -16,7 +16,8 @@ describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   let component: AppComponent;
   let mockStore: MockStore;
-  let selectSelectedTodo: MemoizedSelector<unknown, unknown>;
+  let selectSelectedTodoSpy: MemoizedSelector<unknown, unknown>;
+  let selectCreationModeActiveSpy: MemoizedSelector<unknown, unknown>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -36,9 +37,13 @@ describe('AppComponent', () => {
 
   beforeEach(() => {
     mockStore = TestBed.inject(Store) as MockStore;
-    selectSelectedTodo = mockStore.overrideSelector(
+    selectSelectedTodoSpy = mockStore.overrideSelector(
       fromTodoSelectors.selectSelectedTodo,
       null
+    ) as unknown as MemoizedSelector<unknown, unknown>;
+    selectCreationModeActiveSpy = mockStore.overrideSelector(
+      fromTodoSelectors.selectCreationModeActive,
+      false
     ) as unknown as MemoizedSelector<unknown, unknown>;
 
     fixture = TestBed.createComponent(AppComponent);
@@ -51,13 +56,23 @@ describe('AppComponent', () => {
   });
 
   describe('Form', () => {
-    it('should not show todos form if no selected todo', () =>
+    it('should not show todos form if no selected todo and no creation mode', () =>
       expect(
         fixture.debugElement.query(By.directive(FormComponent))
       ).toBeNull());
 
     it('should show todos form if selected todo', () => {
-      selectSelectedTodo.setResult({});
+      selectSelectedTodoSpy.setResult({});
+      mockStore.refreshState();
+      fixture.detectChanges();
+
+      expect(
+        fixture.debugElement.query(By.directive(FormComponent))
+      ).toBeTruthy();
+    });
+
+    it('should show todos form if creation mode', () => {
+      selectCreationModeActiveSpy.setResult(true);
       mockStore.refreshState();
       fixture.detectChanges();
 

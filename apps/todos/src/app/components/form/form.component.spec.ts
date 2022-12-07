@@ -117,7 +117,7 @@ describe('FormComponent', () => {
   });
 
   describe('Actions', () => {
-    it('should clear selected todo', () => {
+    it('should clear selected todo and deactivate create mode', () => {
       const closeButton = fixture.debugElement.query(
         By.css('#closeButton > button')
       );
@@ -125,6 +125,9 @@ describe('FormComponent', () => {
 
       expect(dispatchSpy).toHaveBeenCalledWith(
         fromTodoActions.clearSelectedTodo()
+      );
+      expect(dispatchSpy).toHaveBeenCalledWith(
+        fromTodoActions.deactivateCreateTodoMode()
       );
     });
 

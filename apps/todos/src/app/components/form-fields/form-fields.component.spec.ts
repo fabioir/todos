@@ -42,4 +42,12 @@ describe('FormFieldsComponent', () => {
 
     expect(errorHint).toBeTruthy();
   });
+
+  it.each([null, undefined])('should hide id if value is %p', (value) => {
+    component.todoForm.controls['id'].setValue(value);
+    fixture.detectChanges();
+
+    const idField = fixture.debugElement.query(By.css('#todo-id'));
+    expect(idField).toBeNull();
+  });
 });

@@ -22,7 +22,7 @@ export class FormComponent implements OnInit, OnDestroy {
   public todoForm = new FormGroup({
     todo: new FormControl<string>('', Validators.required),
     userId: new FormControl<number>(0, Validators.required),
-    id: new FormControl<number>(0, Validators.required),
+    id: new FormControl(),
     completed: new FormControl<boolean>(false),
   });
   public showDelete = false;
@@ -47,6 +47,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   close(): void {
     this.store.dispatch(fromTodoActions.clearSelectedTodo());
+    this.store.dispatch(fromTodoActions.deactivateCreateTodoMode());
   }
 
   edit(): void {
