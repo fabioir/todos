@@ -24,7 +24,7 @@ jobs:
       - name: Build
         run: npm run build
 
-  e2e tests:
+  e2e_tests:
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
