@@ -3,18 +3,19 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppComponent } from './app.component';
 import { ButtonComponent } from './components/button/button.component';
+import { FormFieldsComponent } from './components/form-fields/form-fields.component';
 import { FormComponent } from './components/form/form.component';
 import { ItemComponent } from './components/item/item.component';
 import { ListComponent } from './components/list/list.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { TodoEffects } from './effects/todo.effects';
 import { fromTodoReducer } from './state';
-import { FormFieldsComponent } from './components/form-fields/form-fields.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { FormFieldsComponent } from './components/form-fields/form-fields.compon
     EffectsModule.forRoot([TodoEffects]),
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

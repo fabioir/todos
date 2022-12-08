@@ -1,5 +1,9 @@
 <div class="w-screen h-screen flex flex-col bg-gray-100">
   <todos-toolbar></todos-toolbar>
   <todos-list class="flex-grow flex overflow-hidden"></todos-list>
-  <todos-form *ngIf="openForm$ | async" class="h-[40rem]"></todos-form>
+  <todos-form
+    *ngIf="openForm$ | async"
+    class="h-[40rem]"
+    @formSection
+  ></todos-form>
 </div>

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MemoizedSelector, Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { AppComponent } from './app.component';
@@ -30,7 +31,7 @@ describe('AppComponent', () => {
         ButtonComponent,
         FormFieldsComponent,
       ],
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, NoopAnimationsModule],
       providers: [provideMockStore({})],
     }).compileComponents();
   });
