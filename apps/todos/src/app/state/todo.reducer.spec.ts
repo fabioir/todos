@@ -26,10 +26,9 @@ describe('Todo Reducer', () => {
       expect(result).toEqual({ ...initialState, selectedTodoId: id });
     });
 
-    it('should set selectedTodoId', () => {
-      const id = 1234;
+    it('should clear selectedTodoId', () => {
       const result = reducer(
-        { ...initialState, selectedTodoId: id },
+        { ...initialState, selectedTodoId: 1234 },
         clearSelectedTodo()
       );
 

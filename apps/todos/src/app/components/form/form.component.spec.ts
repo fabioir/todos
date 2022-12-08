@@ -154,12 +154,10 @@ describe('FormComponent', () => {
       );
       submitButton.nativeElement.click();
 
-      expect(dispatchSpy).not.toHaveBeenCalledWith(
-        fromTodoActions.addTodo({ todo: fakeTodo })
-      );
+      expect(dispatchSpy).not.toHaveBeenCalled();
     });
 
-    it('should prevent dispatch if form is invalid', () => {
+    it('should not dispatch edit todo action if form is invalid', () => {
       const submitButton = fixture.debugElement.query(
         By.css('#submitButton > button')
       );
@@ -175,7 +173,7 @@ describe('FormComponent', () => {
   });
 
   describe('Actions', () => {
-    it('should clear selected todo and deactivate create mode', () => {
+    it('should clear selected todo and deactivate create mode on close', () => {
       const closeButton = fixture.debugElement.query(
         By.css('#closeButton > button')
       );

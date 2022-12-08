@@ -5,7 +5,7 @@ test('todos are displayed', async ({ page }) => {
 
   const todo = page.getByTestId('todo-item');
 
-  await expect(todo).toBeTruthy();
+  await expect(todo).toHaveCount(30);
 });
 
 test('todo details are displayed', async ({ page }) => {

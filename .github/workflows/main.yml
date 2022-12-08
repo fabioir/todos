@@ -1,7 +1,7 @@
 name: Todos CI
 on: push
 jobs:
-  validate_and_build:
+  test:
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:

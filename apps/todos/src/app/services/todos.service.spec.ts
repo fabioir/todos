@@ -93,7 +93,7 @@ describe('TodosService', () => {
         service.update({ ...fakeTodo, todo: '' }).subscribe()
       ).toThrowError('Missing content'));
 
-    it('should remove the id from the body', (done) => {
+    it('should remove the id from the request body', (done) => {
       const updatedTodo: Todo = {
         ...fakeTodo,
         todo: 'Feed the fish',

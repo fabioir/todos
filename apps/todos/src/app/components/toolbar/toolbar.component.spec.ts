@@ -40,7 +40,7 @@ describe('ToolbarComponent', () => {
   });
 
   it('should show app title', () => {
-    const title = fixture.debugElement.query(By.css('.app-title'));
+    const title = fixture.debugElement.query(By.css('#app-title'));
     expect(title.nativeElement?.textContent.trim()).toBe('Todos app');
   });
 
