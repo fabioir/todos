@@ -1,11 +1,17 @@
 <button
   [ngClass]="{
-    'bg-orange-300 hover:bg-orange-500': color === 'primary',
-    'bg-red-400 hover:bg-red-500': color === 'warn',
-    'bg-gray-100 hover:bg-gray-500': color === 'accent'
+    'bg-orange-300': color === 'primary',
+    'bg-red-400 ': color === 'warn',
+    'bg-gray-100 ': color === 'accent',
+    'transition ease-in-out duration-400 ': !disabled,
+    'cursor-not-allowed': disabled,
+    'hover:bg-orange-500': color === 'primary' && !disabled,
+    'hover:bg-red-500': color === 'warn' && !disabled,
+    'hover:bg-gray-500': color === 'accent' && !disabled
   }"
-  class="rounded px-1 transition ease-in-out duration-400"
+  class="rounded px-1"
   (click)="clicked.emit()"
+  [disabled]="disabled"
 >
   <span class="text-sm">{{ text }}</span>
 </button>

@@ -21,6 +21,7 @@
       id="submitButton"
       [text]="todoForm.disabled ? 'Edit' : 'Save'"
       (clicked)="todoForm.disabled ? edit() : save()"
+      [disabled]="todoForm.invalid && todoForm.dirty"
     ></todos-button>
   </div>
 </div>

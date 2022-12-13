@@ -16,6 +16,7 @@ type ColorType = 'primary' | 'warn' | 'accent';
 export class ButtonComponent {
   @Input() text!: string;
   @Input() color: ColorType = 'primary';
+  @Input() disabled = false;
 
   @Output() clicked = new EventEmitter();
 }
